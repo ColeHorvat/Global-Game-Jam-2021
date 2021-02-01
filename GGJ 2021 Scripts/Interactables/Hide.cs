@@ -23,6 +23,7 @@ public class Hide : MonoBehaviour
     private bool hidden = false;
 
     private bool hide = false;
+    public float hideTimer;
 
     // Start is called before the first frame update
     void Start()
@@ -74,14 +75,18 @@ public class Hide : MonoBehaviour
 
         }
 
-        if(hide && !hidden)
+        if(hide && !hidden) {
+            //player.GetComponent<CharacterController>().SimpleMove(Vector3.zero);
             StartCoroutine(hidePlayer());
+        }
         else if(!hide && hidden)
             StartCoroutine(unhidePlayer());
         else if(hidden && monster != null && animator.GetBool("kill") == true) {
             StartCoroutine(unhidePlayer());
             gameObject.SetActive(false);
         }
+
+        hideTimer -= Time.deltaTime;
     }
 
     IEnumerator hidePlayer() {
@@ -96,7 +101,6 @@ public class Hide : MonoBehaviour
             //player.GetComponent<CharacterController>().height = 0.1f;
 
             player.transform.position = Vector3.Lerp(player.transform.position, hidingPoint.transform.position, 7 * Time.deltaTime);
-
             gameObject.GetComponent<Outline>().enabled = false;
             cam.GetComponent<Headbobber>().enabled = false;
 
@@ -104,15 +108,17 @@ public class Hide : MonoBehaviour
         }
 
         hidden = true;
-        Debug.Log("Hide");
+        //Debug.Log("Hide");
     }
 
     IEnumerator unhidePlayer() {
         
         
         //killController.canKill = true;
-        while (Vector3.Distance(player.transform.position,lastPosition) > 0.1f)
+        while (Vector3.Distance(player.transform.position,lastPosition) > 0.25f)
         {
+            //player.GetComponent<CharacterController>().SimpleMove(Vector3.zero);
+            Debug.Log("While loop");
             player.transform.position = Vector3.Lerp(player.transform.position, lastPosition, 7 * Time.deltaTime);
             yield return null;
         }
@@ -125,6 +131,7 @@ public class Hide : MonoBehaviour
         playerController.enabled = true;
 
         hidden = false;
-        Debug.Log("Unhide");
+        hideTimer = 1;
+        //Debug.Log("Unhide");
     }
 }
