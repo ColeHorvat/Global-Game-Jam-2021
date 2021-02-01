@@ -93,7 +93,7 @@ public class Hide : MonoBehaviour
 
         playerController.enabled = false;
 
-        while (Vector3.Distance(player.transform.position, hidingPoint.transform.position) > 0.1f)
+        while (Vector3.Distance(player.transform.position, hidingPoint.transform.position) > 0.25f)
         {
             
             gameObject.GetComponent<InteractableController>().active = false;
