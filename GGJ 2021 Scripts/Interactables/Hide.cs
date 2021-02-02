@@ -1,4 +1,4 @@
-﻿using System.Collections;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -9,6 +9,7 @@ public class Hide : MonoBehaviour
     public Vector3 lastPosition;
     public GameObject hidingPoint;
     private PlayerController playerController;
+    public GameObject exitPoint;
 
     //Monster variables
     private KillController killController;
@@ -23,7 +24,6 @@ public class Hide : MonoBehaviour
     private bool hidden = false;
 
     private bool hide = false;
-    public float hideTimer;
 
     // Start is called before the first frame update
     void Start()
@@ -78,24 +78,21 @@ public class Hide : MonoBehaviour
         if(hide && !hidden) {
             //player.GetComponent<CharacterController>().SimpleMove(Vector3.zero);
             StartCoroutine(hidePlayer());
-        }
-        else if(!hide && hidden)
+        } else if(!hide && hidden) {
             StartCoroutine(unhidePlayer());
-        else if(hidden && monster != null && animator.GetBool("kill") == true) {
+        } else if(hidden && monster != null && animator.GetBool("kill") == true) {
             StartCoroutine(unhidePlayer());
             gameObject.SetActive(false);
         }
-
-        hideTimer -= Time.deltaTime;
     }
 
     IEnumerator hidePlayer() {
 
         playerController.enabled = false;
 
-        while (Vector3.Distance(player.transform.position, hidingPoint.transform.position) > 0.25f)
+        while (Vector3.Distance(player.transform.position, hidingPoint.transform.position) > 0.1f)
         {
-            
+            playerController.enabled = false;
             gameObject.GetComponent<InteractableController>().active = false;
             player.transform.localScale = new Vector3(1f, 0.2f, 1f);
             //player.GetComponent<CharacterController>().height = 0.1f;
@@ -115,14 +112,16 @@ public class Hide : MonoBehaviour
         
         
         //killController.canKill = true;
-        while (Vector3.Distance(player.transform.position,lastPosition) > 0.25f)
+        while (Vector3.Distance(player.transform.position,exitPoint.transform.position) > 0.1f)
         {
             //player.GetComponent<CharacterController>().SimpleMove(Vector3.zero);
             Debug.Log("While loop");
-            player.transform.position = Vector3.Lerp(player.transform.position, lastPosition, 7 * Time.deltaTime);
+            playerController.enabled = false;
+            player.transform.position = Vector3.Lerp(player.transform.position, exitPoint.transform.position, 7 * Time.deltaTime);
             yield return null;
         }
 
+        playerController.enabled = true;
         player.transform.localScale = new Vector3(1f, 1f, 1f);
         //player.GetComponent<CharacterController>().height = 1f;
         gameObject.GetComponent<InteractableController>().active = true;
@@ -131,7 +130,6 @@ public class Hide : MonoBehaviour
         playerController.enabled = true;
 
         hidden = false;
-        hideTimer = 1;
         //Debug.Log("Unhide");
     }
 }
