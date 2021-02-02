@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class BrokyFloor : MonoBehaviour
+public class BreakFloor : MonoBehaviour
 {
     public GameObject[] floorPieces;
 

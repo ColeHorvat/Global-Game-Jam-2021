@@ -8,6 +8,11 @@ public class PauseMenu : MonoBehaviour
     public MouseLook mouseLook;
     public GameObject pauseMenuUI;
 
+    void Start()
+    {
+        gameIsPaused = false;
+    }
+
     // Update is called once per frame
     void Update()
     {

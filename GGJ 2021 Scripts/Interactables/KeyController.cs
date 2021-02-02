@@ -22,7 +22,10 @@ public class KeyController : MonoBehaviour
             gameObject.transform.position = hand.transform.position;
             gameObject.transform.parent = hand.transform;
 
+            gameObject.GetComponent<Collider>().enabled = false;
+
             hasKey = true;
         }
+            
     }
 }

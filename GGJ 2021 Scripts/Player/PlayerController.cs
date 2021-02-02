@@ -99,6 +99,9 @@ public class PlayerController : MonoBehaviour
         runBobAmount = headbobber.bobbingAmount*1.5f;
         runBobSpeed = headbobber.bobbingSpeed*1.7f;
 
+        Cursor.lockState = CursorLockMode.Locked;
+        Cursor.visible = false;
+
     }
  
  
